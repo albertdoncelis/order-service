@@ -20,7 +20,8 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [ "../vendor/autoload.php" ]
     },
     "autoload-dev": {
         "classmap": [

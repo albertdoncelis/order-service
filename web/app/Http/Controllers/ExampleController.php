@@ -11,8 +11,12 @@ class ExampleController extends Controller
      */
     public function __construct()
     {
-        //
+
     }
 
-    //
+    public function hello() {
+        global $container;
+        print_r($container->getParameter('sample'));die;
+
+    }
 }

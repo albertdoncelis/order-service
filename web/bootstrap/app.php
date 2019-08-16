@@ -1,6 +1,10 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
+/**
+ * Added a container
+ */
+require_once '../../container.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -90,6 +94,14 @@ $app->singleton(
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+//echo "asd";die;
+//$app->bind('Symfony\Component\DependencyInjection\ContainerBuilder', function() {
+//
+//
+//     print_r($container);die;
+//     return $container;
+//});
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
