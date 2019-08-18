@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc8a865ff7c6ad063aa291d5ed5c3ca6",
+    "content-hash": "6f7bda3c9f64432815429395035e15bd",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -445,6 +445,141 @@
                 "prooph"
             ],
             "time": "2018-02-07T12:51:24+00:00"
+        },
+        {
+            "name": "prooph/snapshot-store",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/prooph/snapshot-store.git",
+                "reference": "54711be95a89400d234cf57a3745ab8fdee5dbf2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/prooph/snapshot-store/zipball/54711be95a89400d234cf57a3745ab8fdee5dbf2",
+                "reference": "54711be95a89400d234cf57a3745ab8fdee5dbf2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "prooph/common": "^4.1"
+            },
+            "require-dev": {
+                "malukenho/docheader": "^0.1.4",
+                "phpspec/prophecy": "^1.7",
+                "phpunit/phpunit": "^6.0",
+                "prooph/bookdown-template": "^0.2.3",
+                "prooph/php-cs-fixer-config": "^0.2.1",
+                "psr/container": "^1.0",
+                "sandrokeil/interop-config": "^2.0.1",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "suggest": {
+                "sandrokeil/interop-config": "^2.0.1 for usage of provided factories"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Prooph\\SnapshotStore\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sascha-Oliver Prolic",
+                    "email": "saschaprolic@googlemail.com"
+                },
+                {
+                    "name": "Alexander Miertsch",
+                    "email": "contact@prooph.de",
+                    "homepage": "http://www.prooph.de"
+                }
+            ],
+            "description": "Prooph Snapshot Store",
+            "homepage": "http://getprooph.org/",
+            "keywords": [
+                "EventSourcing",
+                "ddd",
+                "prooph"
+            ],
+            "time": "2017-12-17T14:15:41+00:00"
+        },
+        {
+            "name": "prooph/snapshotter",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/prooph/snapshotter.git",
+                "reference": "ea32407c104da9dd191321133beaa6bdba49ed9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/prooph/snapshotter/zipball/ea32407c104da9dd191321133beaa6bdba49ed9e",
+                "reference": "ea32407c104da9dd191321133beaa6bdba49ed9e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "prooph/event-sourcing": "^5.0",
+                "prooph/event-store": "^7.0",
+                "prooph/snapshot-store": "^1.0"
+            },
+            "require-dev": {
+                "malukenho/docheader": "^0.1.4",
+                "phpspec/prophecy": "^1.7",
+                "phpunit/phpunit": "^6.0",
+                "prooph/bookdown-template": "^0.2.3",
+                "prooph/php-cs-fixer-config": "^0.2.1",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "suggest": {
+                "prooph/mongodb-snapshot-store": "^1.0 for MongoDB as Snapshot Store",
+                "prooph/pdo-snapshot-store": "^1.0 for PDO as Snapshot Store"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Prooph\\Snapshotter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sascha-Oliver Prolic",
+                    "email": "saschaprolic@googlemail.com"
+                },
+                {
+                    "name": "Alexander Miertsch",
+                    "email": "contact@prooph.de",
+                    "homepage": "http://www.prooph.de"
+                }
+            ],
+            "description": "snapshot tool for prooph event-store",
+            "homepage": "http://getprooph.org/",
+            "keywords": [
+                "ddd",
+                "event-sourcing",
+                "event-store",
+                "prooph",
+                "snapshot"
+            ],
+            "time": "2017-12-15T15:04:31+00:00"
         },
         {
             "name": "psr/container",
