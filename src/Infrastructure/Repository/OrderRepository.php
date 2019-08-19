@@ -20,7 +20,6 @@ class OrderRepository extends AggregateRepository implements BaseOrderRepository
         EventStore $eventStore,
         SnapshotStore $snapshotStore = null)
     {
-
         parent::__construct(
             $eventStore,
             AggregateType::fromAggregateRootClass(
@@ -28,7 +27,7 @@ class OrderRepository extends AggregateRepository implements BaseOrderRepository
             ),
             new AggregateTranslatorAlias(),
             $snapshotStore,
-            null,
+            new StreamName('order'),
             true,
             false,
             []

@@ -22,18 +22,19 @@ namespace {
 
 
     /** @var CommandRouter $commandRouter */
-    $commandRouter = $container->get('commandRouter');
+    $container->get('commandRouter');
 
-    $eventBus = $container->get('eventBus');
+    $container->get('eventBus');
 
-    $eventPublisher = $container->get('eventPublisher');
+    $container->get('eventPublisher');
 
-    $snapshotStore = $container->get('snapshotStore');
+    $container->get('snapshotStore');
 
-    $projectionManager = $container->get('projectionManager');
+    $container->get('projectionManager');
 
-    $orderProjector = $container->get('orderProjector');
-    $eventRouter = $container->get('eventRouter');
+    $container->get('orderProjector');
+
+    $container->get('eventRouter');
 
     $commandBus->dispatch(new CreateOrder([
         'id' => Uuid::uuid4()->toString(),

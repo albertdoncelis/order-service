@@ -7,6 +7,10 @@ parameters:
   event.orderWasCreated: 'OrderService\Domain\DomainEvent\OrderWasCreated'
   event.orderWasCanceled: 'OrderService\Domain\DomainEvent\OrderWasCanceled'
 
+  ## aggregate
+
+  aggregate.order: OrderService\Domain\Aggregate\Order
+
 services:
 
   pdo:
@@ -27,7 +31,7 @@ services:
   eventEmitter:
     class: Prooph\Common\Event\ProophActionEventEmitter
 
-  eventEmitterEventStore:
+  actionEventEmitterEventStore:
     class: Prooph\EventStore\ActionEventEmitterEventStore
     arguments: ['@eventStore', '@eventEmitter']
 
@@ -43,7 +47,7 @@ services:
     class: Prooph\EventStoreBusBridge\EventPublisher
     arguments: ['@eventBus']
     calls:
-      - ['attachToEventStore', ['@eventEmitterEventStore']]
+      - ['attachToEventStore', ['@actionEventEmitterEventStore']]
 
   ## end Event Publisher ##
 
@@ -55,13 +59,13 @@ services:
 
   orderRepository:
     class: OrderService\Infrastructure\Repository\OrderRepository
-    arguments: ['@eventEmitterEventStore', '@snapshotStore']
+    arguments: ['@actionEventEmitterEventStore', '@snapshotStore']
 
   ## end Snapshot ##
 
   projectionManager:
     class: Prooph\EventStore\Pdo\Projection\MySqlProjectionManager
-    arguments: ['@eventEmitterEventStore', '@pdo']
+    arguments: ['@actionEventEmitterEventStore', '@pdo']
 
   ## Command Bus ##
   commandBus:
@@ -100,3 +104,14 @@ services:
       - ['route', ['%event.orderWasCanceled']]
       - ['to', [['@orderProjector', 'onOrderCanceled']]]
       - ['attachToMessageBus', ['@eventBus']]
+
+  snapshotReadModel:
+    class: Prooph\Snapshotter\SnapshotReadModel
+    arguments: ['@orderRepository', '@aggregateTranslator', '@snapshotStore', ['%aggregate.order%']]
+
+  aggregateTranslator:
+    class: Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator
+
+
+
+
