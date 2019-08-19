@@ -19,20 +19,29 @@ class OrderProjector
 
     public function onOrderCreated(OrderWasCreated $orderWasCreated) {
 
-        $query = $this->PDO->prepare("INSERT INTO 
-            `read_orders` SET order_id= :orderId, 
+//        print_r($orderWasCreated);
+
+        $clientId = $orderWasCreated->clientId();
+        $amount = $orderWasCreated->amount();
+        $products = $orderWasCreated->products();
+        $status = $orderWasCreated->status();
+        $aggregateId = $orderWasCreated->aggregateId();
+        $dateCreated = Date('Y-m-d H:i:s', $orderWasCreated->createdAt()->getTimestamp());
+
+        $query = $this->PDO->prepare("INSERT INTO
+            `read_orders` SET order_id= :orderId,
             client_id= :clientId, amount= :amount, products= :products, status= :status, created_at= :createdAt");
-        $query->bindParam(':clientId', $orderWasCreated->clientId(), \PDO::PARAM_STR);
-        $query->bindParam(':amount', $orderWasCreated->amount(),\PDO::PARAM_INT);
+        $query->bindParam(':clientId', $clientId, \PDO::PARAM_STR);
+        $query->bindParam(':amount', $amount,\PDO::PARAM_INT);
         $query->bindParam(
             ':products',
-            $orderWasCreated->products(), \PDO::PARAM_STR);
-        $query->bindParam(':status', $orderWasCreated->status(), \PDO::PARAM_STR);
-        $query->bindParam(':orderId', $orderWasCreated->aggregateId(), \PDO::PARAM_STR);
+            $products, \PDO::PARAM_STR);
+        $query->bindParam(':status', $status, \PDO::PARAM_STR);
+        $query->bindParam(':orderId', $aggregateId, \PDO::PARAM_STR);
         $query->bindParam(':createdAt',
-            Date('Y-m-d H:i:s', $orderWasCreated->createdAt()->getTimestamp()),
+            $dateCreated,
             \PDO::PARAM_STR);
-
+//
         $query->execute();
 
     }
