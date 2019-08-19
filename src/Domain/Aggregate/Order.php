@@ -3,31 +3,29 @@
 
 namespace OrderService\Domain\Aggregate;
 
-
 use OrderService\Domain\DomainEvent\OrderWasCanceled;
 use OrderService\Domain\DomainEvent\OrderWasCreated;
-use OrderService\Domain\GenerateId;
 use Prooph\EventSourcing\AggregateChanged;
 use Prooph\EventSourcing\AggregateRoot;
 
-final class Order extends AggregateRoot
+class Order extends AggregateRoot
 {
 
     public const CREATED = 'created';
     public const CANCELED = 'canceled';
 
-    private $id, $customerId, $amount, $products, $status;
+    private $id, $clientId, $amount, $products, $status;
 
     public static function createWithData(
-        GenerateId $id,
-        string $customerId,
+        string $id,
+        string $clientId,
         float $amount,
         array $products): self {
 
         $order = new self;
 
         $order->recordThat(OrderWasCreated::occur($id,[
-            "clientId" => $customerId,
+            "clientId" => $clientId,
             "amount" => $amount,
             "products" => json_encode($products),
             "status" => Order::CREATED
@@ -54,6 +52,19 @@ final class Order extends AggregateRoot
      * Apply given event
      */
     protected function apply(AggregateChanged $event): void {
-        echo "here";die;
+        switch (get_class($event)) {
+            case OrderWasCreated::class:
+                /** @var OrderWasCreated $event */
+                $this->id = $event->aggregateId();
+                $this->status = $event->status();
+                $this->clientId = $event->clientId();
+                $this->amount = $event->amount();
+                $this->products = $event->products();
+                break;
+            case OrderWasCanceled::class:
+                /** @var OrderWasCanceled $event */
+                $this->id = $event->aggregateId();
+                $this->status = $event->status();
+        }
     }
 }

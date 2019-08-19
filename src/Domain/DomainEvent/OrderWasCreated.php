@@ -20,4 +20,8 @@ final class OrderWasCreated extends AggregateChanged
     public function products(): string {
         return $this->payload['products'];
     }
+
+    public function status(): string {
+        return $this->payload['status'];
+    }
 }

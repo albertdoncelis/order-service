@@ -1,0 +1,102 @@
+parameters:
+  ## Command ##
+  command.createOrder: OrderService\Domain\Command\CreateOrder
+  command.cancelOrder: OrderService\Domain\Command\CancelOrder
+
+  ## Event ##
+  event.orderWasCreated: 'OrderService\Domain\DomainEvent\OrderWasCreated'
+  event.orderWasCanceled: 'OrderService\Domain\DomainEvent\OrderWasCanceled'
+
+services:
+
+  pdo:
+    class: \PDO
+    arguments: ['mysql:host=%pdo.host%;dbname=%pdo.dbname%', '%pdo.username%', '%pdo.password%']
+
+  ## Event Store ##
+  eventStore:
+    class: Prooph\EventStore\Pdo\MySqlEventStore
+    arguments: ['@messageFactory', '@pdo', '@aggregateStreamStrategy']
+
+  aggregateStreamStrategy:
+    class: Prooph\EventStore\Pdo\PersistenceStrategy\MySqlAggregateStreamStrategy
+
+  messageFactory:
+    class: Prooph\Common\Messaging\FQCNMessageFactory
+
+  eventEmitter:
+    class: Prooph\Common\Event\ProophActionEventEmitter
+
+  eventEmitterEventStore:
+    class: Prooph\EventStore\ActionEventEmitterEventStore
+    arguments: ['@eventStore', '@eventEmitter']
+
+  ## end Event Store ##
+
+  ## Event Publisher ##
+
+  eventBus:
+    class: Prooph\ServiceBus\EventBus
+    arguments: ['@eventEmitter']
+
+  eventPublisher:
+    class: Prooph\EventStoreBusBridge\EventPublisher
+    arguments: ['@eventBus']
+    calls:
+      - ['attachToEventStore', ['@eventEmitterEventStore']]
+
+  ## end Event Publisher ##
+
+  ## Snapshot ##
+
+  snapshotStore:
+    class: Prooph\SnapshotStore\Pdo\PdoSnapshotStore
+    arguments: ['@pdo']
+
+  orderRepository:
+    class: OrderService\Infrastructure\Repository\OrderRepository
+    arguments: ['@eventEmitterEventStore', '@snapshotStore']
+
+  ## end Snapshot ##
+
+  projectionManager:
+    class: Prooph\EventStore\Pdo\Projection\MySqlProjectionManager
+    arguments: ['@eventEmitterEventStore', '@pdo']
+
+  ## Command Bus ##
+  commandBus:
+    class: Prooph\ServiceBus\CommandBus
+
+  commandRouter:
+    class: Prooph\ServiceBus\Plugin\Router\CommandRouter
+    calls:
+      - ['route', ['%command.createOrder%']]
+      - ['to', ['@createOrderHandler']]
+      - ['route', ['%command.cancelOrder%']]
+      - ['to', ['@cancelOrderHandler']]
+      - ['attachToMessageBus', ['@commandBus']]
+
+  ## Command Handler ##
+  createOrderHandler:
+    class: OrderService\Domain\Command\Handler\CreateOrderHandler
+    arguments: ['@orderRepository']
+
+  cancelOrderHandler:
+    class: OrderService\Domain\Command\Handler\CancelOrderHandler
+    arguments: ['@orderRepository']
+
+  ## end Command Handler ##
+
+  ## Projector ##
+  orderProjector:
+    class: OrderService\Projection\OrderProjector
+    arguments: ['@pdo']
+
+  eventRouter:
+    class: Prooph\ServiceBus\Plugin\Router\EventRouter
+    calls:
+      - ['route', ['%event.orderWasCreated%']]
+      - ['to', [['@orderProjector', 'onOrderCreated']]]
+      - ['route', ['%event.orderWasCanceled']]
+      - ['to', [['@orderProjector', 'onOrderCanceled']]]
+      - ['attachToMessageBus', ['@eventBus']]

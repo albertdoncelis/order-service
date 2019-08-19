@@ -7,7 +7,6 @@ namespace OrderService\Infrastructure\Repository;
 use OrderService\Domain\Aggregate\Order;
 use Prooph\EventSourcing\Aggregate\AggregateRepository;
 use OrderService\Domain\Repository\OrderRepository as BaseOrderRepository;
-use Prooph\EventSourcing\Aggregate\AggregateTranslator;
 use Prooph\EventSourcing\Aggregate\AggregateType;
 use Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator as AggregateTranslatorAlias;
 use Prooph\EventStore\EventStore;
@@ -19,20 +18,20 @@ class OrderRepository extends AggregateRepository implements BaseOrderRepository
 
     public function __construct(
         EventStore $eventStore,
-        SnapshotStore $snapshotStore = null,
-        StreamName $streamName = null,
-        bool $disableIdentityMap = false,
-        array $metadata = [])
+        SnapshotStore $snapshotStore = null)
     {
+
         parent::__construct(
             $eventStore,
-            AggregateType::fromString('Order'),
+            AggregateType::fromAggregateRootClass(
+                Order::class
+            ),
             new AggregateTranslatorAlias(),
             $snapshotStore,
-            $streamName,
+            null,
             true,
-            $disableIdentityMap,
-            $metadata
+            false,
+            []
         );
     }
 

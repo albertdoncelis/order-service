@@ -1,27 +1,24 @@
 {
-  "name": "albertdoncelis/order-service",
-  "description": "",
-  "type": "library",
-  "authors": [
-    {
-      "name": "Albert Don Celis",
-      "email": "celisalbertdon@gmail.com"
+    "require": {
+        "prooph/service-bus": "^6.2",
+        "prooph/event-sourcing": "^5.6",
+        "prooph/event-store": "^7.5",
+        "prooph/pdo-event-store": "^1.11",
+        "prooph/event-store-bus-bridge": "^3.3",
+        "prooph/snapshotter": "^2.1",
+        "prooph/pdo-snapshot-store": "^1.5",
+        "ramsey/uuid": "^3.8"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "OrderService\\": "src"
+
+        },
+        "psr-0": {
+            "": [
+                "src"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "prooph/event-sourcing": "^5.6",
-    "prooph/event-store": "^7.5",
-    "prooph/service-bus": "^6.2",
-    "symfony/dependency-injection": "^4.3",
-    "symfony/yaml": "^4.3",
-    "symfony/config": "^4.3",
-    "prooph/snapshotter": "^2.1",
-    "ramsey/uuid": "^3.8"
-  },
-  "autoload": {
-    "psr-4": {
-      "OrderService\\": "src"
-    }
-  }
 }

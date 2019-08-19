@@ -16,7 +16,10 @@ class ExampleController extends Controller
 
     public function hello() {
         global $container;
-        print_r($container->getParameter('sample'));die;
+        
+        $pdo = $container->get('PDO');
+        print_r($pdo);
+        die;
 
     }
 }

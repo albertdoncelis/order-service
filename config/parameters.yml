@@ -1,2 +1,7 @@
 parameters:
-  sample: hello
+
+  pdo.dbname: ecommerce
+  pdo.host: mysql57
+  pdo.username: root
+  pdo.password: password
+
