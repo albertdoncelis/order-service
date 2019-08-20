@@ -43,17 +43,18 @@ namespace {
         'clientId' => Uuid::uuid4()->toString(),
     ]));
 //
-//    $commandBus->dispatch(new CreateOrder([
-//        'id' => 'canceled-' . Uuid::uuid4()->toString(),
-//        'amount' => 100.1,
-//        'products' => ['product-1', 'product-2'],
-//        'customerId' => Uuid::uuid4()->toString()
-//    ]));
-//
-//    $commandBus->dispatch(new CancelOrder([
-//        'id' => 'canceled',
-//        'status' => Order::CANCELED
-//    ]));
+    $cancelId = 'canceled-' . Uuid::uuid4()->toString();
+    $commandBus->dispatch(new CreateOrder([
+        'id' => $cancelId,
+        'amount' => 100.1,
+        'products' => ['product-1', 'product-2'],
+        'clientId' => Uuid::uuid4()->toString()
+    ]));
+
+    $commandBus->dispatch(new CancelOrder([
+        'id' => $cancelId,
+        'status' => Order::CANCELED
+    ]));
 
 }
 
